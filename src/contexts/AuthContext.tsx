@@ -15,7 +15,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     error: null,
   });
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [token, setToken] = useState<string | null>(null);
 
   const loadProfile = async (user: User) => {
     try {
@@ -42,6 +42,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         user: session?.user ?? null,
         loading: false,
       }));
+      setToken(session?.access_token ?? null);
       if (session?.user) {
         loadProfile(session.user);
       }
@@ -57,6 +58,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         user: session?.user ?? null,
         loading: false,
       }));
+      setToken(session?.access_token ?? null);
       
       if (session?.user) {
         await loadProfile(session.user);
@@ -114,7 +116,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const signOut = async () => {
     try {
-      setLoading(true);
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       
@@ -125,19 +126,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         error: null
       });
       setProfile(null);
+      setToken(null);
       
-      // Clear any stored session
-      localStorage.removeItem('supabase.auth.token');
     } catch (error) {
       handleAuthError(error as AuthError);
-    } finally {
-      setLoading(false);
     }
   };
 
   const value = {
     ...state,
     profile,
+    token,
     signIn,
     signUp,
     signOut,

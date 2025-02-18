@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { Layout, Menu, Card, Upload, Input, Button, List, Spin, message, Typography } from 'antd';
-import { UploadOutlined, FileTextOutlined, SendOutlined, LogoutOutlined } from '@ant-design/icons';
+import { Layout, Menu, Card, Input, Button, List, Spin, message, Typography } from 'antd';
+import { FileTextOutlined, SendOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { webhookService } from '../services/webhookService';
-import { ExtendedUser } from '../types/auth';
+import DocumentUpload from '../components/DocumentUpload';
+import { WEBHOOK_URLS } from '../config/webhooks';
 
 const { Header, Content, Sider } = Layout;
 const { TextArea } = Input;
 const { Title } = Typography;
 
 export const Dashboard: React.FC = () => {
-  const { user, profile, signOut } = useAuth();
-  const extendedUser = user as ExtendedUser;
+  const { user, token, signOut } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('upload');
   const [loading, setLoading] = useState(false);
@@ -21,58 +21,26 @@ export const Dashboard: React.FC = () => {
 
   const handleSignOut = async () => {
     try {
-      setLoading(true);
       await signOut();
-      // Force navigation to login page
       navigate('/login', { replace: true });
     } catch (error) {
       message.error('Failed to sign out');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleUpload = async (file: File) => {
-    if (!profile?.client_id) {
-      message.error('Client ID not found');
-      return false;
-    }
-
-    try {
-      setLoading(true);
-      // TODO: Implement actual file upload to storage
-      const documentUrl = `https://example.com/documents/${file.name}`;
-      
-      await webhookService.uploadDocument(
-        'YOUR_WEBHOOK_ENDPOINT',
-        profile.client_id,
-        documentUrl,
-        extendedUser?.access_token || ''
-      );
-
-      message.success('Document uploaded successfully');
-      return false; // Prevent default upload behavior
-    } catch (error) {
-      message.error('Failed to upload document');
-      return false;
-    } finally {
-      setLoading(false);
     }
   };
 
   const handleQuery = async () => {
-    if (!profile?.client_id || !query.trim()) {
-      message.error('Please enter a query');
+    if (!user?.id || !query.trim() || !token) {
+      message.error('Please enter a query and ensure you are logged in');
       return;
     }
 
     try {
       setLoading(true);
       const response = await webhookService.submitQuery(
-        'YOUR_WEBHOOK_ENDPOINT',
-        profile.client_id,
+        WEBHOOK_URLS.QUERY1_REQUEST,
+        user.id,
         query,
-        extendedUser?.access_token || ''
+        token
       );
       
       setQueryResults(response.results || []);
@@ -84,18 +52,43 @@ export const Dashboard: React.FC = () => {
     }
   };
 
+  const handleUploadSuccess = (response: any) => {
+    message.success('Document uploaded successfully');
+    // Additional handling of the response if needed
+    console.log('Upload response:', response);
+  };
+
+  const handleUploadError = (error: Error) => {
+    message.error('Failed to upload document: ' + error.message);
+  };
+
   const menuItems = [
     {
       key: 'upload',
-      icon: <UploadOutlined />,
+      icon: <FileTextOutlined />,
       label: 'Upload Document',
     },
     {
       key: 'query1',
       icon: <FileTextOutlined />,
-      label: 'Business Profile',
+      label: 'Business Profile Query',
     },
   ];
+
+  if (!user || !token) {
+    return (
+      <Layout style={{ minHeight: '100vh' }}>
+        <Content style={{ padding: '24px' }}>
+          <Card>
+            <div style={{ textAlign: 'center' }}>
+              <Spin />
+              <p>Please log in to access the dashboard</p>
+            </div>
+          </Card>
+        </Content>
+      </Layout>
+    );
+  }
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -132,37 +125,27 @@ export const Dashboard: React.FC = () => {
             
             {activeTab === 'upload' ? (
               <Card title="Upload Document">
-                <Upload.Dragger
-                  name="file"
-                  multiple={false}
-                  beforeUpload={handleUpload}
-                  showUploadList={true}
-                >
-                  <p className="ant-upload-drag-icon">
-                    <UploadOutlined />
-                  </p>
-                  <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                  <p className="ant-upload-hint">
-                    Support for single file upload. Strictly prohibited from uploading company data or other
-                    banned files.
-                  </p>
-                </Upload.Dragger>
+                <DocumentUpload
+                  webhookUrl={WEBHOOK_URLS.DOCUMENT_UPLOAD}
+                  onUploadSuccess={handleUploadSuccess}
+                  onUploadError={handleUploadError}
+                />
               </Card>
             ) : (
-              <Card title="Business Profile">
+              <Card title="Business Profile Query">
                 <div style={{ marginBottom: 16 }}>
                   <TextArea
                     rows={4}
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Enter your query here..."
+                    placeholder="Enter your business profile query here..."
                     style={{ marginBottom: 16 }}
                   />
                   <Button
                     type="primary"
                     icon={<SendOutlined />}
                     onClick={handleQuery}
-                    disabled={!query.trim()}
+                    disabled={!query.trim() || loading}
                   >
                     Submit Query
                   </Button>

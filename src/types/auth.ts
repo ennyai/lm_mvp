@@ -9,6 +9,7 @@ export interface AuthState {
 
 export interface AuthContextType extends AuthState {
   profile: UserProfile | null;
+  token: string | null;
   signIn: (email: string, password: string) => Promise<User | undefined>;
   signUp: (email: string, password: string) => Promise<User | undefined>;
   signOut: () => Promise<void>;

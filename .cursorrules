@@ -92,7 +92,7 @@
     "performance": "Implement lazy loading and memoization where appropriate. Use AntD's built-in components to ensure a responsive UI.",
     "security": "Always include the client_id with each webhook request and validate that displayed data belongs to the authenticated user.",
     "updatesFile": {
-      "strategy": "Maintain an updates file (changelog) called updates.md to document changes and updates to the .cursorrules file. This file should include version numbers, dates, and a summary of changes. Ensure the updates file is reviewed and updated regularly as part of the development workflow."
+      "strategy": "Maintain an updates file (changelog) called progress.md to document changes and updates to the .cursorrules file. This file should include version numbers, dates, and a summary of changes. Ensure the updates file is reviewed and updated regularly as part of the development workflow."
     }
   }
 }

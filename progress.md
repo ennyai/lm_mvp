@@ -1,14 +1,13 @@
 # Implementation Plan & Changelog
 
-## Version 0.1.6 (Dashboard & Auth Flow) - [Current Date]
+## Version 0.1.7 (CORS & File Upload Improvements) - [Current Date]
 
 ### Recent Updates
-- ✓ Implemented Dashboard with document upload and query functionality
-- ✓ Fixed authentication flow and sign-out routing
-- ✓ Added proper loading states and error handling
-- ✓ Implemented protected routes with proper auth state management
-- ✓ Added business profile query interface
-- ✓ Enhanced UI/UX with loading indicators and error messages
+- ✓ Implemented CORS handling for development using CORS Anywhere proxy
+- ✓ Enhanced file upload functionality with progress tracking
+- ✓ Improved error handling and logging for API calls
+- ✓ Added proper headers for cross-origin requests
+- ✓ Enhanced webhook service with better error messages
 
 ### Current Status
 
@@ -28,21 +27,27 @@
      - ✓ Dashboard layout with sidebar
    - Document upload component:
      - ✓ Basic upload interface
-     - Pending: Storage integration
+     - ✓ Progress tracking
+     - ✓ Error handling
+     - ✓ Success feedback
+     - ✓ File selection validation
      - Pending: File type validation
+     - Pending: File size limits
    - Query interface:
      - ✓ Basic query input
      - ✓ Results display
+     - ✓ Error handling
      - Pending: Enhanced results formatting
      - Pending: Multiple query types
 
-3. **API Integration** [In Progress]
+3. **API Integration** [Improved]
    - ✓ Webhook service layer
    - ✓ Authentication header injection
-   - ✓ Error handling
-   - Pending: Actual webhook endpoints
-   - Pending: File upload to storage
-   - Pending: Query response formatting
+   - ✓ CORS handling for development
+   - ✓ Detailed error logging
+   - ✓ Upload progress tracking
+   - ✓ File upload via FormData
+   - Pending: Production CORS configuration
 
 4. **State Management** [Completed]
    - ✓ Authentication state
@@ -59,14 +64,22 @@
    - Pending: File upload progress
 
 ### Next Steps
-1. Implement file storage integration
-2. Add actual webhook endpoints
+1. Add file type validation
+2. Implement file size limits
 3. Enhance query results display
-4. Add file type validation
-5. Implement file upload progress tracking
-6. Add more query types/interfaces
+4. Configure production CORS handling
+5. Add retry logic for failed uploads
+6. Implement proper error recovery
 
 ## Previous Updates
+
+### [Previous Date] - v0.1.6 (Dashboard & Auth Flow)
+- ✓ Implemented Dashboard with document upload and query functionality
+- ✓ Fixed authentication flow and sign-out routing
+- ✓ Added proper loading states and error handling
+- ✓ Implemented protected routes with proper auth state management
+- ✓ Added business profile query interface
+- ✓ Enhanced UI/UX with loading indicators and error messages
 
 ### [Previous Date] - v0.1.5
 - Established separation between auth profiles and client_profiles

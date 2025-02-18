@@ -6,12 +6,16 @@ export default defineConfig({
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
+  build: {
+    sourcemap: true,
+    outDir: 'dist',
+  },
   define: {
     'process.env': {},
   },
   server: {
     watch: {
       usePolling: true,
-    },
+    }
   },
 }); 
