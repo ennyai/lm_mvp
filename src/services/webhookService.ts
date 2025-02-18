@@ -16,7 +16,10 @@ const MAX_FILE_SIZE = 16 * 1024 * 1024; // 16MB in bytes
 const api = axios.create({
   timeout: 30000, // 30 second timeout
   headers: {
-    'Accept': 'application/json'
+    'Accept': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization'
   }
 });
 
@@ -26,8 +29,17 @@ api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   console.log('Request details:', {
     url: config.url,
     method: config.method,
-    headers: config.headers
+    headers: config.headers,
+    data: config.data
   });
+
+  // Add CORS headers for OPTIONS requests
+  if (config.method?.toUpperCase() === 'OPTIONS') {
+    config.headers['Access-Control-Allow-Origin'] = '*';
+    config.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS';
+    config.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization';
+  }
+
   return config;
 });
 
