@@ -19,13 +19,8 @@ PORT = "8080"
 internal_port = 8080
 protocol = "http"
 auto_deploy = true
-domains = ["lm-mvp.up.railway.app"]
 
 [[services.ports]]
 port = 80
 handlers = ["http"]
-force_https = true
-
-[[services.domains]]
-fqdn = "lm-mvp.up.railway.app"
-zone = "up.railway.app" 
+force_https = true 
