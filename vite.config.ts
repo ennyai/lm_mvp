@@ -37,9 +37,14 @@ export default defineConfig({
       '.railway.app',
       '.up.railway.app',
       'healthcheck.railway.app',
+      'lm-mvp.up.railway.app',
       '*'
     ],
-    cors: true,
+    cors: {
+      origin: '*',
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    },
     proxy: {
       '/api': {
         target: process.env.VITE_API_URL || 'http://localhost:3000',
