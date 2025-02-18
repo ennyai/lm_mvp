@@ -9,6 +9,14 @@ export default defineConfig({
   build: {
     sourcemap: true,
     outDir: 'dist',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom', 'antd', '@ant-design/icons'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 1000,
   },
   define: {
     'process.env': {},
@@ -16,6 +24,12 @@ export default defineConfig({
   server: {
     watch: {
       usePolling: true,
-    }
+    },
+    host: true,
+    port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
+  },
+  preview: {
+    host: true,
+    port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
   },
 }); 

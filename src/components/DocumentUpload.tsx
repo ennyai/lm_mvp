@@ -20,7 +20,7 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
-  const { user, token } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (!webhookUrl) {

@@ -39,8 +39,7 @@ export const Dashboard: React.FC = () => {
       const response = await webhookService.submitQuery(
         WEBHOOK_URLS.QUERY1_REQUEST,
         user.id,
-        query,
-        token
+        query
       );
       
       setQueryResults(response.results || []);
