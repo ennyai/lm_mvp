@@ -1,0 +1,111 @@
+# Implementation Plan & Changelog
+
+## Version 0.1.6 (Dashboard & Auth Flow) - [Current Date]
+
+### Recent Updates
+- ✓ Implemented Dashboard with document upload and query functionality
+- ✓ Fixed authentication flow and sign-out routing
+- ✓ Added proper loading states and error handling
+- ✓ Implemented protected routes with proper auth state management
+- ✓ Added business profile query interface
+- ✓ Enhanced UI/UX with loading indicators and error messages
+
+### Current Status
+
+1. **Authentication Implementation** [Completed]
+   - ✓ Supabase authentication configuration
+   - ✓ AuthContext for global auth state management
+   - ✓ User profile management
+   - ✓ Login/Signup forms
+   - ✓ Protected route implementation
+   - ✓ Sign-out functionality
+   - ✓ Token and session management
+
+2. **Core Components Development** [In Progress]
+   - Layout components:
+     - ✓ Main layout with navigation
+     - ✓ Protected layout wrapper
+     - ✓ Dashboard layout with sidebar
+   - Document upload component:
+     - ✓ Basic upload interface
+     - Pending: Storage integration
+     - Pending: File type validation
+   - Query interface:
+     - ✓ Basic query input
+     - ✓ Results display
+     - Pending: Enhanced results formatting
+     - Pending: Multiple query types
+
+3. **API Integration** [In Progress]
+   - ✓ Webhook service layer
+   - ✓ Authentication header injection
+   - ✓ Error handling
+   - Pending: Actual webhook endpoints
+   - Pending: File upload to storage
+   - Pending: Query response formatting
+
+4. **State Management** [Completed]
+   - ✓ Authentication state
+   - ✓ User session data
+   - ✓ Loading states
+   - ✓ Error handling
+
+5. **UI/UX Enhancement** [In Progress]
+   - ✓ Responsive layout
+   - ✓ Loading indicators
+   - ✓ Error notifications
+   - ✓ Success feedback
+   - Pending: Enhanced query results display
+   - Pending: File upload progress
+
+### Next Steps
+1. Implement file storage integration
+2. Add actual webhook endpoints
+3. Enhance query results display
+4. Add file type validation
+5. Implement file upload progress tracking
+6. Add more query types/interfaces
+
+## Previous Updates
+
+### [Previous Date] - v0.1.5
+- Established separation between auth profiles and client_profiles
+- Created webhook service for n8n communication
+- Added typed interfaces for webhook payloads
+- Implemented document upload and query submission methods
+
+### [Current Date] - v0.1.4
+- Added Supabase project credentials
+- Created user profile types and services
+- Implemented user profile management in AuthContext
+- Added profile state management
+- Updated types to include user profiles
+
+### [Current Date] - v0.1.3
+- Created Login page with AntD Form components
+- Implemented Protected Route HOC
+- Set up basic routing structure
+- Added environment type declarations
+- Fixed TypeScript configuration for Vite env variables
+
+### [Current Date] - v0.1.2
+- Set up Supabase authentication configuration
+- Created auth types and interfaces
+- Implemented AuthContext with sign-in, sign-up, and sign-out functionality
+- Added environment variables structure
+
+### [Current Date] - v0.1.1
+- Installed core dependencies:
+  - antd and @ant-design/icons for UI components
+  - @supabase/supabase-js for authentication
+  - axios for API calls
+  - react-router-dom for routing
+- Created basic project folder structure
+
+### [Current Date] - v0.1.0
+- Initial project planning
+- Created implementation roadmap
+- Set up base Vite + React project
+
+---
+*Note: This document will be updated as the project progresses. Each significant change will be documented with a version number, date, and description of changes.* 

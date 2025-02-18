@@ -1,0 +1,98 @@
+{
+  "title": "Front-End Implementation Guide for Client-Specific AI Workflow",
+  "projectContext": {
+    "purpose": "Build a React-based UI that allows authenticated clients to upload documents, initiate AI queries, and view results. The app connects to n8n webhooks to trigger back-end workflows.",
+    "techStack": {
+      "frontend": "React with Ant Design (AntD) using Vite",
+      "authentication": "Supabase Auth",
+      "backendIntegration": "n8n workflows via webhooks"
+    },
+    "dataFlowOverview": [
+      "User logs in via Supabase; client_id and JWT token are stored in state.",
+      "UI actions trigger POST requests to n8n webhooks with a JSON payload including client_id and additional action-specific data.",
+      "The response from n8n is parsed and rendered in the UI using AntD components."
+    ]
+  },
+  "codingStandards": {
+    "codingStandards": "Follow standard React best practices, maintain clear component boundaries, and separate UI logic from API calls.",
+    "uiFramework": "Ant Design (AntD) for UI components.",
+    "folderStructure": "Example: src/components, src/hooks, src/contexts, src/utils, src/pages.",
+    "buildTool": "Use Vite for development and bundling."
+  },
+  "authentication": {
+    "description": "Implement user login/signup using Supabase Auth. On successful login, store the client_id and authentication token in the application state (e.g., using React Context or Redux). Protect routes to ensure only authenticated users can access them."
+  },
+  "webhookCommunication": {
+    "generalStructure": {
+      "payload": {
+        "client_id": "<client_id>",
+        "action": "<action_type>",
+        "additionalFields": "For document uploads, include 'document_url'. For query requests, include 'query'."
+      },
+      "headers": {
+        "Authorization": "Bearer <TOKEN>"
+      }
+    },
+    "specificActions": {
+      "documentUpload": {
+        "action": "document_upload",
+        "requiredField": "document_url",
+        "flow": "User uploads a document via AntD Upload/Input components, then a POST request is sent to the n8n webhook endpoint (e.g., https://n8n.example.com/webhook/xyz) with the payload."
+      },
+      "queryRequest": {
+        "action": "query_request",
+        "requiredField": "query",
+        "flow": "User submits a query through a form, then a POST request is sent to the n8n webhook endpoint with the client_id and query details."
+      }
+    }
+  },
+  "frontendComponents": {
+    "authenticationAndRoutes": "Build a Login page using AntD Form, Input, and Button. On success, store client_id and token, and protect subsequent routes using a higher-order component or context-based guard.",
+    "documentUploadComponent": "Create a component using AntD Upload, Input, Button, and Form. On submission, send a POST request with the document URL and client_id to the webhook endpoint. Use AntD Spin for loading indicators and Notification/Message for success or error feedback.",
+    "queryAnalysisComponent": "Develop a component that allows users to submit queries using AntD Form, Input, and Button. On submission, send a POST request with the client_id and query. Render the response data using AntD components such as Card, List, Collapse, and Tabs.",
+    "displayingResponseData": "Ensure that all webhook responses are parsed and rendered using appropriate AntD components, and verify that the data corresponds to the authenticated client (client_id)."
+  },
+  "stateManagement": {
+    "description": "Use React Context or Redux to manage the authentication state (client_id and token) and data returned from webhook calls. Implement error handling with try/catch around API calls and use AntD Notification/Message components to display errors."
+  },
+  "exampleApiCallFlow": {
+    "steps": [
+      "User logs in via the Login form; on success, the client_id and token are stored in the state.",
+      "Document Upload Action: User uploads a document. The front end sends a POST request with the payload { 'client_id': 'client_12345', 'action': 'document_upload', 'document_url': 'https://docs.google.com/your-file' } to the webhook endpoint.",
+      "Query Request Action: User submits a query. The front end sends a POST request with the payload { 'client_id': 'client_12345', 'action': 'query_request', 'query': 'Extract business details for analysis.' } to the webhook endpoint.",
+      "Display a loading indicator during the request and render the returned data upon success."
+    ]
+  },
+  "testingGuidelines": {
+    "description": "All components and API interactions should be tested using Jest and React Testing Library. The target is to achieve at least 80% test coverage.",
+    "tools": [
+      "Jest",
+      "React Testing Library"
+    ],
+    "coverageTarget": "80%"
+  },
+  "additionalGuidelines": {
+    "environmentManagement": {
+      "strategy": "Store configuration details (API endpoints, secrets, tokens) using Supabase as a central store and manage environment variables via Railway's configuration settings. This ensures that deployment-specific settings are securely injected during build/deployment."
+    },
+    "globalErrorHandling": {
+      "strategy": "Implement a basic global error boundary in React to capture and display unexpected runtime errors. For logging, start with console logging and plan to integrate a logging service (such as Sentry) in the future for production error tracking."
+    },
+    "tokenManagement": {
+      "strategy": "Adopt industry-standard practices for handling token expiration. Use established libraries (such as axios interceptors or react-query) to perform silent token refreshes or prompt reauthentication when necessary, ensuring a smooth user experience."
+    },
+    "accessibilityAndUX": {
+      "strategy": "Follow WCAG 2.1 guidelines to ensure your application is accessible. Utilize semantic HTML, proper ARIA attributes, and ensure keyboard navigability. Leverage Ant Design’s accessibility features and conduct user testing to validate that the UI meets accessibility standards."
+    },
+    "deploymentCICD": {
+      "strategy": "Deploy your application using Railway. Configure Railway's environment variables for secure storage of secrets and endpoints. Use Railway's built-in CI/CD pipeline or integrate with GitHub Actions to automate tests (targeting at least 80% coverage with Jest and React Testing Library) and deployments."
+    },
+    "documentation": "Include clear comments in your code and maintain README files in major directories.",
+    "codingStyle": "Follow consistent naming conventions and adhere to ESLint/Prettier configurations.",
+    "performance": "Implement lazy loading and memoization where appropriate. Use AntD's built-in components to ensure a responsive UI.",
+    "security": "Always include the client_id with each webhook request and validate that displayed data belongs to the authenticated user.",
+    "updatesFile": {
+      "strategy": "Maintain an updates file (changelog) called updates.md to document changes and updates to the .cursorrules file. This file should include version numbers, dates, and a summary of changes. Ensure the updates file is reviewed and updated regularly as part of the development workflow."
+    }
+  }
+}
