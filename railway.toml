@@ -9,6 +9,18 @@ healthcheckPath = "/"
 healthcheckTimeout = 100
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3
+numReplicas = 1
+healthcheckProtocol = "http"
 
 [deploy.envs]
-PORT = "3000" 
+PORT = "8080"
+
+[[services]]
+internal_port = 8080
+protocol = "http"
+auto_deploy = true
+
+[[services.ports]]
+port = 80
+handlers = ["http"]
+force_https = true 

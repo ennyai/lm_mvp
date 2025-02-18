@@ -25,18 +25,27 @@ export default defineConfig({
     watch: {
       usePolling: true,
     },
-    host: true,
+    host: '0.0.0.0',
     port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
   },
   preview: {
-    host: true,
+    host: '0.0.0.0',
     port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
     allowedHosts: [
       'localhost',
       '127.0.0.1',
       '.railway.app',
       '.up.railway.app',
-      'healthcheck.railway.app'
+      'healthcheck.railway.app',
+      '*'
     ],
+    cors: true,
+    proxy: {
+      '/api': {
+        target: process.env.VITE_API_URL || 'http://localhost:3000',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
   },
 }); 
