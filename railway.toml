@@ -1,6 +1,6 @@
 [build]
 builder = "NIXPACKS"
-buildCommand = "yarn install && yarn build"
+buildCommand = "yarn install --no-frozen-lockfile && yarn build"
 publishDirectory = "dist"
 
 [deploy]
